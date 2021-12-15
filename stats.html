@@ -26,9 +26,26 @@
             .select("*");
       let PlaceArray = placesObj.data;
       let VoteArray = votesObj.data;
+      
+      let heighestId = 0;
       for (var x = 0; x < VoteArray.length; x++)
       {
         console.log(VoteArray[x]);
+        if (heighestId < VoteArray[x].place_id)
+        {
+          heighestId = VoteArray[x].place_id;
+        }
+      }
+      console.log("heighestId", heighestId);
+      let PlaceIds = [];
+      for (var x=0; x<heighestId; x++)
+      {
+        PlaceIds.push(x+1);
+      }
+      console.log(PlaceIds);
+      for (var x=0; x<heighestId; x++)
+      {
+        
       }
 
       for (var x = 0; x < PlaceArray.length; x++)

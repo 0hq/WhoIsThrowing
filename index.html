@@ -30,57 +30,76 @@
       let places = placesObj.data;
       const categoryMap = new Map();
       for (let i = 0; i < votes.length; i++){
-        console.log("here");
         let place = votes[i].place_id;
         let vote = votes[i].vote;
         try{
           if (vote){
-            categoryMap.set(votes[i].place_id, [categoryMap.get(votes[i].place_id)[0] + 1, categoryMap.get(votes[i].place_id)[1]]);
+            categoryMap.set(votes[i].place_id, {"yesVotes": categoryMap.get(place).yesVotes + 1, "noVotes": categoryMap.get(place).noVotes, "nameOfHouse": places[place - 1].name});//[categoryMap.get(votes[i].place_id)[0] + 1, categoryMap.get(votes[i].place_id)[1]]);
           }
           else{
-            categoryMap.set(votes[i].place_id, [categoryMap.get(votes[i].place_id)[0], categoryMap.get(votes[i].place_id)[1] + 1]);
+            categoryMap.set(votes[i].place_id, {"yesVotes": categoryMap.get(place).yesVotes, "noVotes": categoryMap.get(place).noVotes + 1, "nameOfHouse": places[place - 1].name});//[categoryMap.get(votes[i].place_id)[0], categoryMap.get(votes[i].place_id)[1] + 1]);
           }
         }
         catch{
           if (vote){
-            categoryMap.set(votes[i].place_id, [1, 0]);
+            categoryMap.set(place, {"yesVotes": 1, "noVotes": 0, "nameOfHouse": places[place - 1].name});//[1, 0]);
           }
           else{
-            categoryMap.set(votes[i].place_id, [0, 1]);
+            categoryMap.set(votes[i].place_id, {"yesVotes": 0, "noVotes": 1, "nameOfHouse": places[place - 1].name});//[0, 1]);
           }
         }
         
       }
       let yes = document.getElementById("yesList");
-      // let maybe = document.getElementById("myList");
-      // let no = document.getElementById("myList");
+      let maybe = document.getElementById("maybeList");
+      let no = document.getElementById("noList");
       for (let [key, value] of categoryMap){
-        if (value[0]/(value[0] + value[1]) > 0.75){
-          console.log(value[0]/(value[0] + value[1]))
-
-          let li = document.createElement("div");
-          li.classList.add('Pill')
+        if (value.yesVotes/(value.yesVotes + value.noVotes) > 0.75){
+          console.log(value.yesVotes/(value.yesVotes + value.noVotes));
+          console.log(value, value.yesVotes, value.noVotes);
           
-          let h = document.createElement("h1");
-          h.innerText = "ΣΧ Sigma Poop";
-          li.appendChild(h)
-          
-          yes.appendChild(li);
+          yes.appendChild(generate(value.nameOfHouse, [value.yesVotes, value.noVotes]));
           
           //var elt = //create pill element
           //document.getElementById("probThrowing").classList.add(elt)
         }
-        else if (value[0]/(value[0] + value[1]) > 0.4){
+        else if (value.yesVotes/(value.yesVotes + value.noVotes) > 0.4){
           console.log("mb throwing");
-          //var elt = //create pill element
-          //document.getElementById("mabyeThrowing").classList.add(elt)
+          maybe.appendChild(generate(value.nameOfHouse, [value.yesVotes, value.noVotes]));
         }
         else{
           console.log("not throwing");
-          //var elt = //create pill element
-          //document.getElementById("notThrowing").classList.add(elt)
+          no.appendChild(generate(value.nameOfHouse, [value.yesVotes, value.noVotes]));
         }
       }
+    }
+    function generate(name, value) {
+      let li = document.createElement("div");
+      li.classList.add('Pill')
+      let h = document.createElement("h1");
+      h.innerText = name;
+      li.appendChild(h)
+
+      let v = document.createElement("div");
+      v.classList.add('VoteBox')
+      let i1 = document.createElement("img");
+      i1.src = "RedEx.svg";
+      i1.style = "padding: 15px;  padding-left: 2px; padding-right: 25px; float: right;";
+      v.appendChild(i1)
+      let p1 = document.createElement("p");
+      p1.classList.add('PillCounter')
+      p1.innerText = value[1];
+      v.appendChild(p1)
+      let i2 = document.createElement("img");
+      i2.src = "circle_check_outline.svg";
+      i2.style = "padding: 15px; padding-left: 3px; padding-right: 5px; float: right;";
+      v.appendChild(i2)
+      let p2 = document.createElement("p");
+      p2.classList.add('PillCounter')
+      p2.innerText = value[0];
+      v.appendChild(p2)
+      li.appendChild(v)
+      return li
     }
     logData()
 	</script>
@@ -96,47 +115,20 @@
     <div class="CategoryTextBox" style="width: 118px;">
       <h class="CategoryText" style="color: #29AC46; width:118px;">Probably throwing...</h>
     </div>
-    <div class='Pill' onclick="location.href = '/voting.html?name=ΣΧ Sigma Poop&id=3';">
-      <h1>
-        ΣΧ Sigma Poop
-      </h1>
-      <div class="VoteBox">
-        <img src = "RedEx.svg" alt="Ex" style="padding: 15px;  padding-left: 2px; padding-right: 25px; float: right;"/>
-        <p class="PillCounter">12</p>
-        <img src = "circle_check_outline.svg" alt="Check" style="padding: 15px; padding-left: 3px; padding-right: 5px; float: right;"/>        <p class="PillCounter">12</p>
-      </div>  
-    </div>
+    <ul style="padding: 0; margin: 0;" id="yesList"></ul>
   </div>
   <div class="Category" id="maybeThrowing" style="border: 3px solid #CB7D09;">
     <div class="CategoryTextBox" style="width: 103px;">
       <h class="CategoryText" style="color: #CB7D09; width:;118px;">Maybe throwing?</h>
     </div>
-    <div class='Pill' onclick="location.href = '/voting.html?name=ΣΧ Sigma Poop&id=3';">
-      <h1>
-        ΣΧ Sigma Poop
-      </h1>
-      <div class="VoteBox">
-        <img src = "RedEx.svg" alt="Ex" style="padding: 15px;  padding-right: 25px; padding-left: 2px;  float: right;">        <p class="PillCounter">12</p>
-        <img src = "circle_check_outline.svg" alt="Check" style="padding: 15px; padding-left: 3px; padding-right: 5px; float: right;" >        <p class="PillCounter">12</p>
-
-      </div>  
-    </div>
+        <ul style="padding: 0; margin: 0;" id="maybeList"></ul>
   </div>
   <div class="Category" id="notThrowing" style="border: 3px solid #DA3939;">
     <div class="CategoryTextBox" style="width: 130px;">
       <h class="CategoryText" style="color: #DA3939; width: 130px;">Probably not throwing</h>
     </div>
-    <div class='Pill' onclick="location.href = '/voting.html?name=ΣΧ Sigma Poop&id=4';">
-      <h1>
-        ΣΧ Sigma Poop
-      </h1>
-      <div class="VoteBox">
-
-        <img src = "RedEx.svg" alt="Ex" style="padding: 15px;  padding-right: 25px; padding-left: 2px;  float: right;">        <p class="PillCounter">12</p>
-        <img src = "circle_check_outline.svg" alt="Check" style="padding: 15px; padding-left: 3px; padding-right: 5px; float: right;" >        <p class="PillCounter">12</p>
-
-     </div>
-    </div>
+    <ul style="padding: 0; margin: 0;" id="noList"></ul>
+  </div>
 </body>
 
 </html>
