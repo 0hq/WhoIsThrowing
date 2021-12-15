@@ -6,17 +6,18 @@
 	<meta name="viewport" content="width=device-width">
 	<title>replit</title>
 	<link href="style.css" rel="stylesheet" type="text/css" />
-  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js">
-  </script>
+	<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js">
+
+	</script>
 </head>
 
 <body>
 	<div class='TopBar'>
 		<div style='display: flex; justify-content: space-between'>
-      <a href='/' style="text-decoration: none;">
-			<h style="font-family: Favorit;
+			<a href='/' style="text-decoration: none;">
+				<h style="font-family: Favorit;
     font-size: 18px; color: #ffffff">👋 Vote on Who’s Throwing Tonight </h>
-    </a>
+			</a>
 			<a href='/'>
 				<img src='off_outline_close.svg' style='margin-top: 1px' width="28" ></img>
     </a>
@@ -36,25 +37,21 @@
           </div>
         </div>
     </div>
-    <div class='VotingPill' style="height: 134px; padding-top: 15px;">
-        <h2>
-        How open will they be to newcomers?
-        </h2>
-        <input style="margin-top: 20px" type="range" min="1" max="100" value="50" class="slider" id="myRange" >
-        <h3 style="color: #A5A5A5;
-  font-size: 8pt;
+    <div class='VotingPill' style="height: 160px; padding-top: 15px; text-align: center;">
+        <h4 style="color: #C4C4C4;
+  font-size: 12pt;
   font-family: FavoritReg;  
-  padding-top: 8px;
+  padding: 0;
   margin: 0;">
-        drag to see different options
-        </h3>
+        How open will they be to newcomers?
+        </h4>
+        <input style="margin-top: 20px" type="range" min="1" max="100" value="50" class="slider" id="myRange" >
         <i>
           <h3 id = "rangeText" style="color: #C4C4C4;
-          font-size: 15pt;
+          font-size: 12pt;
           font-family: FavoritReg;  
-          padding-top: 8.5px;
-          margin: 0;">
-          'Open for girls, guys need valid shawties to get in'
+          max-width: 200px; margin-left: auto; margin-right: auto;">
+          Drag to see different options.
           </h3>
         </i>
     </div>
@@ -108,7 +105,7 @@
           .from('votes')
           .insert([{ place_id: paramId, open: document.getElementById("myRange").value, vote: vote, open_text: document.getElementById("rangeText").innerHTML, user_id: 'NoUser' }]))
         window.location.href = "/";
-      } else {
+      } else if (validVote) {
         console.log(await _supabase
           .from('votes')
           .insert([{ place_id: paramId, vote: vote, user_id: 'NoUser' }]))
@@ -119,18 +116,16 @@
     slide.addEventListener('input',  function () {
       let val = this.value;
       validNewcomers = true;
-      if (val > 75){
-        document.getElementById("rangeText").innerHTML = "'Door will be completely open, anyone can come'";
-      }
-      else if (val > 50){
-        document.getElementById("rangeText").innerHTML = "'Open for girls, guys need valid shawties to get in'";
-      }
-      else if (val > 25){
-        document.getElementById("rangeText").innerHTML = "'Only open for girls or guys that know someone'";
-      }
-      else{
-        document.getElementById("rangeText").innerHTML = "'Open for girls only'";
-      }
+      let possibilites = ["By invitation only.",
+"You must closely know someone in here to get in.",
+"Go with someone who's close/a member. No gender exception.",
+"Go with someone who's close/a member, unless you're a girl.",
+"Girls can get in, guys need to be with a couple girls.",
+"Come with a group, you'll be fine.",
+"Anyone can come in, door will be open."]
+      let index = Math.floor(val / (100 / possibilites.length));
+      if (index == possibilites.length) index--;
+      document.getElementById("rangeText").innerHTML = possibilites[index];
     }, false)
 	</script>
 </body>

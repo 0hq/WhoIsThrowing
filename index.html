@@ -4,7 +4,13 @@
 <head>
 	<meta charset="utf-8">
 	<meta name="viewport" content="width=device-width">
-	<title>replit</title>
+
+<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+<link rel="manifest" href="/site.webmanifest">
+
+	<title>Who's Throwing?</title>
 	<link href="style.css" rel="stylesheet" type="text/css" />
 	<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js">
 
@@ -23,7 +29,7 @@
       let placesObj = await _supabase.from("places")
             .select("*");
       let votesObj = await _supabase.from("votes")
-            .select("*");
+            .select("*").gt("timestamp", new Date(new Date() - 1000 * 60 * 60 * 24).toISOString());
       console.log(placesObj)
       console.log(votesObj);
       let votes = votesObj.data;
@@ -48,6 +54,7 @@
             categoryMap.set(votes[i].place_id, {"yesVotes": 0, "noVotes": 1, "nameOfHouse": places[place - 1].name});//[0, 1]);
           }
         }
+
         
       }
       let yes = document.getElementById("yesList");
@@ -58,28 +65,39 @@
           console.log(value.yesVotes/(value.yesVotes + value.noVotes));
           console.log(value, value.yesVotes, value.noVotes);
           
-          yes.appendChild(generate(value.nameOfHouse, [value.yesVotes, value.noVotes]));
+          yes.appendChild(generate(value.nameOfHouse, [value.yesVotes, value.noVotes], key));
           
           //var elt = //create pill element
           //document.getElementById("probThrowing").classList.add(elt)
         }
         else if (value.yesVotes/(value.yesVotes + value.noVotes) > 0.4){
           console.log("mb throwing");
-          maybe.appendChild(generate(value.nameOfHouse, [value.yesVotes, value.noVotes]));
+          maybe.appendChild(generate(value.nameOfHouse, [value.yesVotes, value.noVotes], key));
         }
         else{
           console.log("not throwing");
-          no.appendChild(generate(value.nameOfHouse, [value.yesVotes, value.noVotes]));
+          no.appendChild(generate(value.nameOfHouse, [value.yesVotes, value.noVotes], key));
+        }
+      }
+      for (let i = 0; i < places.length; i++){
+        try{
+          console.log("Cole",categoryMap.get(places[i].id).yesVotes);
+        }
+        catch{
+          no.appendChild(generate(places[i].name, [0, 0], places[i].id));
         }
       }
     }
-    function generate(name, value) {
+    function generate(name, value, id) {
       let li = document.createElement("div");
       li.classList.add('Pill')
+            li.onclick = function () {location.href = "/voting.html?name=" + name + "&id=" + id}
+
+      // li.onclick = "location.href =
+      
       let h = document.createElement("h1");
       h.innerText = name;
       li.appendChild(h)
-
       let v = document.createElement("div");
       v.classList.add('VoteBox')
       let i1 = document.createElement("img");
