@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width">
+	<title>replit</title>
+	<link href="style.css" rel="stylesheet" type="text/css" />
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js">
+  </script>
+</head>
+
+<body>
+	<div class='TopBar'>
+		<div style='display: flex; justify-content: space-between'>
+      <a href='/' style="text-decoration: none;">
+			<h style="font-family: Favorit;
+    font-size: 18px; color: #ffffff">👋 Vote on Who’s Throwing Tonight </h>
+    </a>
+			<a href='/'>
+				<img src='off_outline_close.svg' style='margin-top: 1px' width="28" ></img>
+    </a>
+    </div>
+  </div>
+  <div style="margin-top: 13px">
+    <div class='VotingPill' style="height: 151px; padding-top: 15px;">
+        <h2>
+        Is <span id="VoteName">???</span> throwing tonight?
+        </h2>
+        <div style="height: 86px; display: flex; margin-top: 15px; margin-left: 15px; margin-right: 15px;">
+          <div class="VoteButtonYes" id="VoteButtonYes" style="background-color: #21B141; flex-grow: 1; margin-right: 7.5px; border-radius: 10px;" onclick="select(true)">
+            <img fill="white" src='LightOn.svg' style='margin-top: 12px' width="58" ></img>
+          </div>
+          <div class="VoteButtonNo" id="VoteButtonNo"  style="background-color: #CA2727; flex-grow: 1; margin-left: 7.5px; border-radius: 10px;" onclick="select(false)">
+            <img src='LightOff.svg' style='margin-top: 12px' width="58" ></img>
+          </div>
+        </div>
+    </div>
+    <div class='VotingPill' style="height: 134px; padding-top: 15px;">
+        <h2>
+        How open will they be to newcomers?
+        </h2>
+        <input style="margin-top: 20px" type="range" min="1" max="100" value="50" class="slider" id="myRange" >
+        <h3 style="color: #A5A5A5;
+  font-size: 8pt;
+  font-family: FavoritReg;  
+  padding-top: 8px;
+  margin: 0;">
+        drag to see different options
+        </h3>
+        <i>
+          <h3 id = "rangeText" style="color: #C4C4C4;
+          font-size: 15pt;
+          font-family: FavoritReg;  
+          padding-top: 8.5px;
+          margin: 0;">
+          'Open for girls, guys need valid shawties to get in'
+          </h3>
+        </i>
+    </div>
+    <div class='VotingPill' style="height: 51px; padding-top: 15px;">
+      <!-- <a href="/" style="text-decoration: none;"> -->
+        <div id="SubmitDiv" style="width: 92%; background-color: #686868; height: 34px; margin-left: 4%; border-radius: 5px;">
+          <h3 style="color: #ffffff;
+            font-size: 13pt;
+            font-family: FavoritReg;  
+            padding-top: 7px;
+            margin: 0;" onclick="post()">
+            Submit
+            </h3>
+        </div>
+      <!-- </a> -->
+    </div>
+  </div>
+  <script>
+    console.log("Go")
+    const { createClient } = supabase
+    const _supabase = createClient('https://emchbxlwrfbblusmucks.supabase.co',
+    'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJyb2xlIjoiYW5vbiIsImlhdCI6MTYzOTUyMjc0MCwiZXhwIjoxOTU1MDk4NzQwfQ.xEmp6h2FC9CU37wl2DijJD3PN0PSQUT9W8HpmDLdI90')
+		const urlParams = new URLSearchParams(window.location.search);
+    const myParam = urlParams.get('name');
+    const paramId = urlParams.get('id');
+    console.log(paramId)
+    console.log(myParam);
+    document.getElementById("VoteName").innerHTML = myParam;
+    let vote = null;
+    let validVote = false;
+    let validNewcomers = false;
+    function select(id) {
+      console.log(id)
+      vote = id;
+      validVote = true;
+      document.getElementById("SubmitDiv").style.background = "#29AC46";
+      document.getElementById("SubmitDiv").style.cursor = "pointer";
+      //document.getElementById("SubmitDiv").style.hover = "opacity: 0.8;";
+      if (id) {
+        document.getElementById("VoteButtonYes").style.outline = "3px solid #00FF39";
+        document.getElementById("VoteButtonNo").style.outline = "none";
+      } else {
+        document.getElementById("VoteButtonNo").style.outline = "3px solid #FF0000";
+        document.getElementById("VoteButtonYes").style.outline = "none";
+      }
+    }
+    async function post() {
+      console.log("post")
+      if (validNewcomers) {
+        console.log(await _supabase
+          .from('votes')
+          .insert([{ place_id: paramId, open: document.getElementById("myRange").value, vote: vote, open_text: document.getElementById("rangeText").innerHTML, user_id: 'NoUser' }]))
+        window.location.href = "/";
+      } else {
+        console.log(await _supabase
+          .from('votes')
+          .insert([{ place_id: paramId, vote: vote, user_id: 'NoUser' }]))
+        window.location.href = "/";
+      }
+    }
+    let slide = document.getElementById("myRange");
+    slide.addEventListener('input',  function () {
+      let val = this.value;
+      validNewcomers = true;
+      if (val > 75){
+        document.getElementById("rangeText").innerHTML = "'Door will be completely open, anyone can come'";
+      }
+      else if (val > 50){
+        document.getElementById("rangeText").innerHTML = "'Open for girls, guys need valid shawties to get in'";
+      }
+      else if (val > 25){
+        document.getElementById("rangeText").innerHTML = "'Only open for girls or guys that know someone'";
+      }
+      else{
+        document.getElementById("rangeText").innerHTML = "'Open for girls only'";
+      }
+    }, false)
+	</script>
+</body>
+
+</html>

@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width">
+	<title>replit</title>
+	<link href="style.css" rel="stylesheet" type="text/css" />
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js">
+  </script>
+</head>
+
+<body>
+    <div id="VoteRes">
+    </div>
+
+	  <script>
+    console.log("Go")
+    const { createClient } = supabase
+    const _supabase = createClient('https://emchbxlwrfbblusmucks.supabase.co',
+    'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJyb2xlIjoiYW5vbiIsImlhdCI6MTYzOTUyMjc0MCwiZXhwIjoxOTU1MDk4NzQwfQ.xEmp6h2FC9CU37wl2DijJD3PN0PSQUT9W8HpmDLdI90')
+    async function getVals(){
+      let placesObj = await _supabase.from("places")
+            .select("*");
+      let votesObj = await _supabase.from("votes")
+            .select("*");
+      let PlaceArray = placesObj.data;
+      let VoteArray = votesObj.data;
+      for (var x = 0; x < VoteArray.length; x++)
+      {
+        console.log(VoteArray[x]);
+      }
+
+      for (var x = 0; x < PlaceArray.length; x++)
+      {
+        console.log(PlaceArray[x]);
+      }
+    }
+    getVals();
+    
+
+    </script>
+</body>
+
+</html>

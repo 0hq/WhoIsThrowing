@@ -1,0 +1,198 @@
+@font-face {
+font-family: Whyte;
+src: url(ABCWhyteEdu-Bold.otf);
+}
+
+@font-face {
+font-family: WhyteMed;
+src: url(ABCWhyteEdu-Medium.otf);
+}
+
+@font-face {
+font-family: WhyteBlack;
+src: url(ABCWhyteEdu-Black.otf);
+}
+
+@font-face {
+font-family: Favorit;
+src: url(ABCFavoritEdu-Bold.otf);
+}
+
+@font-face {
+font-family: FavoritReg;
+src: url(ABCFavoritEdu-Regular.otf);
+}
+
+@font-face {
+font-family: Diatype;
+src: url(ABCDiatypeEdu-Regular.otf);
+}
+
+body {
+    background: #121212;
+    margin: 0;
+}
+
+.TopBar {
+  background: #333333;
+  position: relative;
+  box-sizing: border-box;
+  padding-top: 9px;
+  padding-left: 18px;
+  padding-right: 14px;
+  width: 100%;
+  height: 47px;
+}
+
+.Category {
+  display: flex;
+  margin-top: 20px;
+  position: relative;
+  width: 93%;
+  left: 3.5%;
+  padding-top: 20px;
+  padding-left: 10px;
+  padding-right: 10px;
+
+  box-sizing: border-box;
+  border-radius: 15px;
+  flex-direction: column;
+}
+
+.CategoryTextBox {
+  /* Auto Layout */
+
+  display: flex;
+  flex-direction: row;
+  align-items: flex-start;
+  padding: 1px 5px;
+
+  position: absolute;
+  height: 19px;
+  left: 20.55px;
+  top: -10px;
+
+  background: #121212;
+}
+
+.CategoryText {
+  position: static;
+  height: 17px;
+  left: 5px;
+  top: 1px;
+
+  font-family: ABC Whyte Edu;
+  font-style: normal;
+  font-weight: bold;
+  font-size: 12px;
+  line-height: 17px;
+}
+
+.Pill {
+  display: flex;
+  
+  justify-content: space-between;
+  height: 52px;
+  margin-bottom: 20px;
+  background: #2E2E2E;
+  box-shadow: 3px 3px 0px #4e4e4e;
+  border-radius: 9px;
+  flex-grow: 1;
+  
+}
+
+.Pill:hover
+{
+  cursor: pointer;
+}
+
+.VotingPill {  
+  max-width: 800px;
+  margin-top: 16px;
+  margin-left: auto;
+  margin-right: auto;
+  width: 95%;
+  background: #2E2E2E;
+  box-shadow: 3px 3px 0px #4e4e4e;
+  border-radius: 9px;
+  text-align: center;  
+}
+
+h1{
+  color: #C4C4C4;
+  font-size: 14pt;
+  font-family: FavoritReg;
+  padding-left: 15px;
+  
+}
+
+h2{
+  color: #C4C4C4;
+  font-size: 14pt;
+  font-family: FavoritReg;  
+  padding: 0;
+  margin: 0;
+}
+
+/* p{
+  float: right;
+  padding-right: 0px;
+  padding-left: 0px;
+  padding-top:0px;
+  font-family: FavoritReg;
+  color: #C4C4C4;
+} */
+
+.PillCounter {
+  float: right;
+  padding-right: 0px;
+  padding-left: 0px;
+  padding-top:0px;
+  font-family: FavoritReg;
+  color: #C4C4C4;
+}
+
+.VoteBox{
+  justify-content: right;
+}
+
+.VoteButtonYes:hover {
+  opacity: .8;
+  cursor: pointer;
+}
+
+.VoteButtonNo:hover {
+  opacity: .8;
+  cursor: pointer;
+}
+
+.slider {
+  -webkit-appearance: none;
+  width: 86%;
+  left: 7%;
+  height: 8px;
+  border-radius: 5px;  
+  background: #000000;
+  outline: none;
+  opacity: 0.7;
+  -webkit-transition: .2s;
+  transition: opacity .2s;
+}
+
+.slider::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 18px;
+  height: 18px;
+  border-radius: 50%; 
+  background: #ECECEC;
+  cursor: pointer;
+}
+
+.slider::-moz-range-thumb {
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  background: #ECECEC;
+  cursor: pointer;
+}

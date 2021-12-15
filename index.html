@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width">
+	<title>replit</title>
+	<link href="style.css" rel="stylesheet" type="text/css" />
+	<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js">
+
+	</script>
+</head>
+
+<body>
+	<script>
+		console.log("Go")
+    const { createClient } = supabase
+    const _supabase = createClient('https://emchbxlwrfbblusmucks.supabase.co',
+    'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJyb2xlIjoiYW5vbiIsImlhdCI6MTYzOTUyMjc0MCwiZXhwIjoxOTU1MDk4NzQwfQ.xEmp6h2FC9CU37wl2DijJD3PN0PSQUT9W8HpmDLdI90')
+
+    
+    async function logData(){
+      let placesObj = await _supabase.from("places")
+            .select("*");
+      let votesObj = await _supabase.from("votes")
+            .select("*");
+      console.log(placesObj)
+      console.log(votesObj);
+      let votes = votesObj.data;
+      let places = placesObj.data;
+      const categoryMap = new Map();
+      for (let i = 0; i < votes.length; i++){
+        console.log("here");
+        let place = votes[i].place_id;
+        let vote = votes[i].vote;
+        try{
+          if (vote){
+            categoryMap.set(votes[i].place_id, [categoryMap.get(votes[i].place_id)[0] + 1, categoryMap.get(votes[i].place_id)[1]]);
+          }
+          else{
+            categoryMap.set(votes[i].place_id, [categoryMap.get(votes[i].place_id)[0], categoryMap.get(votes[i].place_id)[1] + 1]);
+          }
+        }
+        catch{
+          if (vote){
+            categoryMap.set(votes[i].place_id, [1, 0]);
+          }
+          else{
+            categoryMap.set(votes[i].place_id, [0, 1]);
+          }
+        }
+        
+      }
+      let yes = document.getElementById("yesList");
+      // let maybe = document.getElementById("myList");
+      // let no = document.getElementById("myList");
+      for (let [key, value] of categoryMap){
+        if (value[0]/(value[0] + value[1]) > 0.75){
+          console.log(value[0]/(value[0] + value[1]))
+
+          let li = document.createElement("div");
+          li.classList.add('Pill')
+          
+          let h = document.createElement("h1");
+          h.innerText = "ΣΧ Sigma Poop";
+          li.appendChild(h)
+          
+          yes.appendChild(li);
+          
+          //var elt = //create pill element
+          //document.getElementById("probThrowing").classList.add(elt)
+        }
+        else if (value[0]/(value[0] + value[1]) > 0.4){
+          console.log("mb throwing");
+          //var elt = //create pill element
+          //document.getElementById("mabyeThrowing").classList.add(elt)
+        }
+        else{
+          console.log("not throwing");
+          //var elt = //create pill element
+          //document.getElementById("notThrowing").classList.add(elt)
+        }
+      }
+    }
+    logData()
+	</script>
+	<div class='TopBar'>
+		<div style='display: flex; justify-content: space-between'>
+			<h style="font-family: Favorit;
+    font-size: 18px; color: #ffffff">👋 Who’s Throwing Tonight?</h>
+			<a href='/info.html'>
+				<img src='info_circle_outline.svg' style='margin-top: 1px' width="28" ></img></a>
+    </div>
+  </div> 
+  <div class="Category" id="probThrowing" style="border: 3px solid #29AC46;">
+    <div class="CategoryTextBox" style="width: 118px;">
+      <h class="CategoryText" style="color: #29AC46; width:118px;">Probably throwing...</h>
+    </div>
+    <div class='Pill' onclick="location.href = '/voting.html?name=ΣΧ Sigma Poop&id=3';">
+      <h1>
+        ΣΧ Sigma Poop
+      </h1>
+      <div class="VoteBox">
+        <img src = "RedEx.svg" alt="Ex" style="padding: 15px;  padding-left: 2px; padding-right: 25px; float: right;"/>
+        <p class="PillCounter">12</p>
+        <img src = "circle_check_outline.svg" alt="Check" style="padding: 15px; padding-left: 3px; padding-right: 5px; float: right;"/>        <p class="PillCounter">12</p>
+      </div>  
+    </div>
+  </div>
+  <div class="Category" id="maybeThrowing" style="border: 3px solid #CB7D09;">
+    <div class="CategoryTextBox" style="width: 103px;">
+      <h class="CategoryText" style="color: #CB7D09; width:;118px;">Maybe throwing?</h>
+    </div>
+    <div class='Pill' onclick="location.href = '/voting.html?name=ΣΧ Sigma Poop&id=3';">
+      <h1>
+        ΣΧ Sigma Poop
+      </h1>
+      <div class="VoteBox">
+        <img src = "RedEx.svg" alt="Ex" style="padding: 15px;  padding-right: 25px; padding-left: 2px;  float: right;">        <p class="PillCounter">12</p>
+        <img src = "circle_check_outline.svg" alt="Check" style="padding: 15px; padding-left: 3px; padding-right: 5px; float: right;" >        <p class="PillCounter">12</p>
+
+      </div>  
+    </div>
+  </div>
+  <div class="Category" id="notThrowing" style="border: 3px solid #DA3939;">
+    <div class="CategoryTextBox" style="width: 130px;">
+      <h class="CategoryText" style="color: #DA3939; width: 130px;">Probably not throwing</h>
+    </div>
+    <div class='Pill' onclick="location.href = '/voting.html?name=ΣΧ Sigma Poop&id=4';">
+      <h1>
+        ΣΧ Sigma Poop
+      </h1>
+      <div class="VoteBox">
+
+        <img src = "RedEx.svg" alt="Ex" style="padding: 15px;  padding-right: 25px; padding-left: 2px;  float: right;">        <p class="PillCounter">12</p>
+        <img src = "circle_check_outline.svg" alt="Check" style="padding: 15px; padding-left: 3px; padding-right: 5px; float: right;" >        <p class="PillCounter">12</p>
+
+     </div>
+    </div>
+</body>
+
+</html>
